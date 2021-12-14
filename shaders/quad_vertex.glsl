@@ -1,6 +1,7 @@
 uniform float aspect;
 uniform vec2 center;
 uniform float scale;
+uniform float xDisplacement;
 
 varying vec2 UV;
 
@@ -11,5 +12,5 @@ void main() {
 	UV *= scale;
 	UV += center;
 
-	gl_Position = vec4(position.x, position.y, 0, 1.0);
+	gl_Position = vec4(position.x + xDisplacement, position.y, 0, 1.0);
 }

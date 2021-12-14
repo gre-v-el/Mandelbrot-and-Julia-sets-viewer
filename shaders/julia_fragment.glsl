@@ -1,15 +1,16 @@
 // per frame variables
+uniform vec2 picked; 
 
 // per pixel variables
 varying vec2 UV;
 
 // consts
-const int ITERATIONS = 1000;
+const int ITERATIONS = 500;
 
 
 void main() { 
 	
-	vec2 c = UV;
+	vec2 c = picked;
 	vec2 z = UV;
 	float escapeTime = 0.;
 
@@ -21,5 +22,7 @@ void main() {
 		i ++;
 	}
 
-	gl_FragColor = vec4(vec3(float(i)/float(ITERATIONS)), 1.);
+	float ratio = float(i)/float(ITERATIONS);
+
+	gl_FragColor = vec4(vec3(ratio*ratio), 1.);
 }

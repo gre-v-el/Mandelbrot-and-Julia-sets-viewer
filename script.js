@@ -19,34 +19,58 @@ script.src = ''// '//mrdoob.github.io/stats.js/build/stats.min.js';
 document.head.appendChild(script);
 
 // uniforms
-var rmUniforms = {
+var mandelbrotUniforms = {
 	aspect: { value: cameraThree.aspect },
-	center: {value: new THREE.Vector2(-1, 0)},
-	scale: {value: 1}
+	center: {value: new THREE.Vector2(-0.6, 0)},
+	scale: {value: 5},
+	xDisplacement: {value: -0.5},
+	picked: {value: new THREE.Vector2()}
+};
+var juliaUniforms = {
+	aspect: { value: cameraThree.aspect },
+	center: {value: new THREE.Vector2(-0.6, 0)},
+	scale: {value: 5},
+	xDisplacement: {value: 0.5},
+	picked: {value: new THREE.Vector2(1, 0)}
 };
 
 // load shaders and create the scene
-var vertex = '';
-var fragment = '';
-loader.load('/shaders/fragment.glsl', function (data) { fragment = data; countLoads(); })
-loader.load('/shaders/vertex.glsl', function (data) { vertex = data; countLoads(); })
+var quadVertex = '';
+var mandelbrotFragment = '';
+var juliaFragment = '';
+loader.load('/shaders/mandelbrot_fragment.glsl', function (data) { mandelbrotFragment = data; countLoads(); })
+loader.load('/shaders/quad_vertex.glsl', function (data) { quadVertex = data; countLoads(); })
+loader.load('/shaders/julia_fragment.glsl', function (data) { juliaFragment = data; countLoads(); })
 
-var loadsLeft = 2;
+var loadsLeft = 3;
 function countLoads() {
 	loadsLeft--;
 	if (loadsLeft == 0) {
 		// main display setup
-		var quadDisplay = new THREE.Mesh(
-			new THREE.PlaneGeometry(2, 2),
+		var mandelbrotDisplay = new THREE.Mesh(
+			new THREE.PlaneGeometry(1, 2),
 			new THREE.ShaderMaterial({
-				vertexShader: vertex,
-				fragmentShader: fragment,
-				uniforms: rmUniforms,
+				vertexShader: quadVertex,
+				fragmentShader: mandelbrotFragment,
+				uniforms: mandelbrotUniforms,
 				depthWrite: false,
 				depthTest: false
 			})
 		);
-		sceneThree.add(quadDisplay);
+		sceneThree.add(mandelbrotDisplay);
+
+
+		var juliaDisplay = new THREE.Mesh(
+			new THREE.PlaneGeometry(1, 2),
+			new THREE.ShaderMaterial({
+				vertexShader: quadVertex,
+				fragmentShader: juliaFragment,
+				uniforms: juliaUniforms,
+				depthWrite: false,
+				depthTest: false
+			})
+		);
+		sceneThree.add(juliaDisplay);
 	}
 }
 
@@ -55,13 +79,21 @@ function tick() {
 	var dt = clock.getDelta();
 
 	if(controls.mouseLeft){
-		rmUniforms.center.value.x -= 
-			controls.mouseDX / canvasHTML.width * rmUniforms.scale.value;
-		rmUniforms.center.value.y += 
-			controls.mouseDY / canvasHTML.height * rmUniforms.scale.value;
+		mandelbrotUniforms.center.value.x -= 
+			controls.mouseDX / canvasHTML.width * mandelbrotUniforms.scale.value;
+		mandelbrotUniforms.center.value.y += 
+			controls.mouseDY / canvasHTML.height * mandelbrotUniforms.scale.value;
+	}
+	if(controls.mouseRight){
+		juliaUniforms.picked.value = new THREE.Vector2(
+			(controls.mouseX / canvasHTML.width*2 - 0.5) * mandelbrotUniforms.aspect.value * mandelbrotUniforms.scale.value + mandelbrotUniforms.center.value.x,
+			-(controls.mouseY / canvasHTML.height - 0.5) * mandelbrotUniforms.scale.value + mandelbrotUniforms.center.value.y
+		);
+
+		mandelbrotUniforms.picked.value = juliaUniforms.picked.value;
 	}
 	
-	rmUniforms.scale.value /= Math.pow(1.005, controls.mouseScroll);
+	mandelbrotUniforms.scale.value /= Math.pow(1.005, controls.mouseScroll);
 
 
 	updateControls();
@@ -77,7 +109,8 @@ function render() {
 		rendererThree.setSize(canvasHTML.clientWidth, canvasHTML.clientHeight, false);
 		cameraThree.aspect = canvasHTML.clientWidth / canvasHTML.clientHeight;
 		cameraThree.updateProjectionMatrix();
-		rmUniforms.aspect.value = cameraThree.aspect;
+		mandelbrotUniforms.aspect.value = cameraThree.aspect/2;
+		juliaUniforms.aspect.value = cameraThree.aspect/2;
 	}
 	rendererThree.render(sceneThree, cameraThree);
 }
