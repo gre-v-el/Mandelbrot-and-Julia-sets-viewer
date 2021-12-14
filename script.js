@@ -25,6 +25,7 @@ var rmUniforms = {
 	scale: {value: 1}
 };
 
+// load shaders and create the scene
 var vertex = '';
 var fragment = '';
 loader.load('/shaders/fragment.glsl', function (data) { fragment = data; countLoads(); })
@@ -52,6 +53,15 @@ function countLoads() {
 
 function tick() {
 	var dt = clock.getDelta();
+
+	if(controls.mouseLeft){
+		rmUniforms.center.value.x -= controls.mouseDX / canvasHTML.width;
+		rmUniforms.center.value.y += controls.mouseDY / canvasHTML.height;
+	}
+
+	
+
+	updateControls();
 
 	render();
 	if (stats != undefined) stats.update();
