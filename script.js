@@ -28,7 +28,7 @@ var mandelbrotUniforms = {
 };
 var juliaUniforms = {
 	aspect: { value: cameraThree.aspect },
-	center: {value: new THREE.Vector2(-0.6, 0)},
+	center: {value: new THREE.Vector2(0, 0)},
 	scale: {value: 5},
 	xDisplacement: {value: 0.5},
 	picked: {value: new THREE.Vector2(1, 0)}
@@ -78,13 +78,13 @@ function countLoads() {
 function tick() {
 	var dt = clock.getDelta();
 
-	if(controls.mouseLeft){
+	if(controls.mouseRight){
 		mandelbrotUniforms.center.value.x -= 
-			controls.mouseDX / canvasHTML.width * mandelbrotUniforms.scale.value;
+			controls.mouseDX / canvasHTML.width*2 * mandelbrotUniforms.scale.value;
 		mandelbrotUniforms.center.value.y += 
 			controls.mouseDY / canvasHTML.height * mandelbrotUniforms.scale.value;
 	}
-	if(controls.mouseRight){
+	if(controls.mouseLeft){
 		juliaUniforms.picked.value = new THREE.Vector2(
 			(controls.mouseX / canvasHTML.width*2 - 0.5) * mandelbrotUniforms.aspect.value * mandelbrotUniforms.scale.value + mandelbrotUniforms.center.value.x,
 			-(controls.mouseY / canvasHTML.height - 0.5) * mandelbrotUniforms.scale.value + mandelbrotUniforms.center.value.y
@@ -93,7 +93,7 @@ function tick() {
 		mandelbrotUniforms.picked.value = juliaUniforms.picked.value;
 	}
 	
-	mandelbrotUniforms.scale.value /= Math.pow(1.005, controls.mouseScroll);
+	mandelbrotUniforms.scale.value *= Math.pow(1.002, controls.mouseScroll);
 
 
 	updateControls();
