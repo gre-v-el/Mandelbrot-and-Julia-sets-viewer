@@ -4,7 +4,7 @@
 varying vec2 UV;
 
 // consts
-const int ITERATIONS = 100;
+const int ITERATIONS = 1000;
 
 
 void main() { 

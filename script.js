@@ -55,11 +55,14 @@ function tick() {
 	var dt = clock.getDelta();
 
 	if(controls.mouseLeft){
-		rmUniforms.center.value.x -= controls.mouseDX / canvasHTML.width;
-		rmUniforms.center.value.y += controls.mouseDY / canvasHTML.height;
+		rmUniforms.center.value.x -= 
+			controls.mouseDX / canvasHTML.width * rmUniforms.scale.value;
+		rmUniforms.center.value.y += 
+			controls.mouseDY / canvasHTML.height * rmUniforms.scale.value;
 	}
-
 	
+	rmUniforms.scale.value /= Math.pow(1.005, controls.mouseScroll);
+
 
 	updateControls();
 

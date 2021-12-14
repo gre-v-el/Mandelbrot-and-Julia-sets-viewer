@@ -2,11 +2,13 @@ document.addEventListener('contextmenu', event => event.preventDefault());
 
 var controls = {
 	w: false, a: false, s: false, d: false, e: false, q: false,
-	mouseLeft: false, mouseRight: false, mouseX: 0, mouseY: 0, mouseDX: 0, mouseDY: 0
+	mouseLeft: false, mouseRight: false, mouseX: 0, mouseY: 0, mouseDX: 0, mouseDY: 0,
+	mouseScroll: 1
 }
 var prevControls = {
 	w: false, a: false, s: false, d: false, e: false, q: false,
-	mouseLeft: false, mouseRight: false, mouseX: 0, mouseY: 0, mouseDX: 0, mouseDY: 0
+	mouseLeft: false, mouseRight: false, mouseX: 0, mouseY: 0, mouseDX: 0, mouseDY: 0,
+	mouseScroll: 1
 };
 
 function updateControls(){
@@ -22,9 +24,16 @@ function updateControls(){
 	prevControls.mouseY = controls.mouseY;
 	prevControls.mouseDX = controls.mouseDX;
 	prevControls.mouseDY = controls.mouseDY;
+	prevControls.mouseScroll = controls.mouseScroll;
 
 	controls.mouseDY = 0;
 	controls.mouseDX = 0;
+
+	controls.mouseScroll = 0;
+}
+
+document.onwheel = function (e) {
+	controls.mouseScroll += e.deltaY;
 }
 
 document.onkeydown = function (e) {
