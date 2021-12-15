@@ -1,12 +1,25 @@
+// TODO: OPTIMIZE!!!
+
 // per frame variables
 uniform vec2 picked; 
 uniform float scale;
 uniform float juliaInterpolation;
 uniform bool isJulia;
 uniform int iterations;
+uniform float power;
 
 // per pixel variables
 varying vec2 UV;
+
+vec2 complexPow(vec2 c, float power){
+	float r = length(c);
+	float theta = atan(c.y, c.x);
+
+	r = pow(r, power);
+	theta *= power;
+
+	return vec2(r*cos(theta), r*sin(theta));
+}
 
 void main() { 
 	// define initial numbers
@@ -22,9 +35,11 @@ void main() {
 	// iterate
 	int i = 0;
 	while( (z.x*z.x + z.y*z.y < 4. && i < iterations) || i < 1){
-		float xtemp = z.x*z.x - z.y*z.y + c.x;
-		z.y = 2.*z.x*z.y + c.y;
-		z.x = xtemp;
+		// float xtemp = z.x*z.x - z.y*z.y + c.x;
+		// z.y = 2.*z.x*z.y + c.y;
+		// z.x = xtemp;
+		z = complexPow(z, power);
+		z += c;
 		i ++;
 
 		//nearest = min(nearest, pow(10.*min(abs(z.x), abs(z.y)), 0.1)*1.);
