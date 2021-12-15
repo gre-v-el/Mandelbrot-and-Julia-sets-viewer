@@ -26,7 +26,8 @@ var mandelbrotUniforms = {
 	xDisplacement: {value: -0.5},
 	picked: {value: new THREE.Vector2(-1, 0)},
 	juliaInterpolation: {value: 0},
-	isJulia: {value: false}
+	isJulia: {value: false},
+	iterations: {value: 500}
 };
 var juliaUniforms = {
 	aspect: { value: cameraThree.aspect },
@@ -35,7 +36,8 @@ var juliaUniforms = {
 	xDisplacement: {value: 0.5},
 	picked: {value: new THREE.Vector2(-1, 0)},
 	juliaInterpolation: {value: 1},
-	isJulia: {value: true}
+	isJulia: {value: true},
+	iterations: {value: 500}
 };
 
 // load shaders and create the scene

@@ -1,5 +1,7 @@
 document.addEventListener('contextmenu', event => event.preventDefault());
 
+var canvas = document.getElementById("canvas");
+
 var controls = {
 	w: false, a: false, s: false, d: false, e: false, q: false,
 	mouseLeft: false, mouseRight: false, mouseX: 0, mouseY: 0, mouseDX: 0, mouseDY: 0,
@@ -37,13 +39,13 @@ function updateControls(){
 	controls.doUpdate = false;
 }
 
-document.onwheel = function (e) {
+canvas.onwheel = function (e) {
 	controls.doUpdate = true;
 
 	controls.mouseScroll += e.deltaY;
 }
 
-document.onkeydown = function (e) {
+canvas.onkeydown = function (e) {
 	controls.doUpdate = true;
 	
 	switch (e.code) {
@@ -67,7 +69,7 @@ document.onkeydown = function (e) {
 			break;
 	}
 };
-document.onkeyup = function (e) {
+canvas.onkeyup = function (e) {
 	controls.doUpdate = true;
 	
 	switch (e.code) {
@@ -92,7 +94,7 @@ document.onkeyup = function (e) {
 	}
 };
 
-document.onmousedown = function (e) {
+canvas.onmousedown = function (e) {
 	controls.doUpdate = true;
 	
 	if(e.button == 0) controls.mouseLeft = true;

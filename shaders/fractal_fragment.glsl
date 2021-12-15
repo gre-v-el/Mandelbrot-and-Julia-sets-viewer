@@ -3,12 +3,10 @@ uniform vec2 picked;
 uniform float scale;
 uniform float juliaInterpolation;
 uniform bool isJulia;
+uniform int iterations;
 
 // per pixel variables
 varying vec2 UV;
-
-// consts
-const int ITERATIONS = 500;
 
 void main() { 
 	// define initial numbers
@@ -18,20 +16,22 @@ void main() {
 	vec2 z = UV;
 
 	// orbit traps
-	float best = 10e5;
+	float nearest = 10e5;
+	float average = 0.;
 
 	// iterate
 	int i = 0;
-	while(z.x*z.x + z.y*z.y < 4. && i < ITERATIONS){
+	while(z.x*z.x + z.y*z.y < 4. && i < iterations){
 		float xtemp = z.x*z.x - z.y*z.y + c.x;
 		z.y = 2.*z.x*z.y + c.y;
 		z.x = xtemp;
 		i ++;
 
-		best = min(best, pow(10.*min(abs(z.x), abs(z.y)), 0.1)*1.);
+		//nearest = min(nearest, pow(10.*min(abs(z.x), abs(z.y)), 0.1)*1.);
+		nearest = min(nearest, min(abs(z.x), abs(z.y)));
+		average += min(abs(z.x), abs(z.y));
 	}
-
-	// coloring
+	average /= float(i);
 
 	// draw pointer
 	float pointer = isJulia?0.:
@@ -41,7 +41,13 @@ void main() {
 		step(-0.015 * scale, picked.x - UV.x) * step(picked.x - UV.x, 0.015*scale) *
 		step(-0.0015 * scale, picked.y - UV.y) * step(picked.y - UV.y, 0.0015*scale);
 
-	vec3 color = 4.*vec3(1.-best)* vec3(0.1294, 0.6118, 0.0824);
+	vec3 nearestColor = vec3(0.7804, 0.9216, 0.0) * vec3(2.*(1.-pow(10.*nearest, 0.1)));
+	vec3 averageColor = vec3(0.0745, 0.4392, 0.0) * vec3(pow(0.5*average, 0.5));
+	vec3 basicColor   = vec3(0.0, 0.8824, 1.0) * vec3(float(i)/float(iterations));
 
-	gl_FragColor = vec4(pointer>0.?1.-color:color, 1.);//i==ITERATIONS?vec4(0., 0., 0., 1.):vec4(pointer>0.?1.-color:color, 1.);
+	vec3 color = (nearestColor + averageColor + basicColor) * vec3(0.5);
+
+	color = mix(color, vec3(1.) - color, pointer);
+
+	gl_FragColor = vec4(color, 1.);
 }

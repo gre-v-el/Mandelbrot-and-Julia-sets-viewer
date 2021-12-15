@@ -1,15 +1,30 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Full screen quad</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Full screen quad</title>
 	<link rel="stylesheet" href="style.css">
 </head>
-<body>
-    <canvas class="webgl" id="canvas"></canvas>
 
+<body>
+	<canvas class="webgl" id="canvas"></canvas>
+	<nav id="inspector">
+		<input type="number" class="box" id="iterations-input" step="50" min="0" max="10000" value="500"> Iterations
+
+		<br>
+		<br>
+
+		<input type="range" class="slider" id="interpolation-input" step="0.001" min="0" max="1" value="1"> 
+		<br>
+		Julia Set Interpolation
+
+
+	</nav>
+	
 	<script src="controls.js"></script>
 	<script src="script.js" type="module"></script>
 </body>
+
 </html>
