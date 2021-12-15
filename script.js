@@ -24,25 +24,28 @@ var mandelbrotUniforms = {
 	center: {value: new THREE.Vector2(-0.6, 0)},
 	scale: {value: 5},
 	xDisplacement: {value: -0.5},
-	picked: {value: new THREE.Vector2()}
+	picked: {value: new THREE.Vector2(-1, 0)},
+	juliaInterpolation: {value: 0},
+	isJulia: {value: false}
 };
 var juliaUniforms = {
 	aspect: { value: cameraThree.aspect },
 	center: {value: new THREE.Vector2(0, 0)},
 	scale: {value: 5},
 	xDisplacement: {value: 0.5},
-	picked: {value: new THREE.Vector2(1, 0)}
+	picked: {value: new THREE.Vector2(-1, 0)},
+	juliaInterpolation: {value: 1},
+	isJulia: {value: true}
 };
 
 // load shaders and create the scene
 var quadVertex = '';
-var mandelbrotFragment = '';
+var fractalFragment = '';
 var juliaFragment = '';
-loader.load('/shaders/mandelbrot_fragment.glsl', function (data) { mandelbrotFragment = data; countLoads(); })
+loader.load('/shaders/fractal_fragment.glsl', function (data) { fractalFragment = data; countLoads(); })
 loader.load('/shaders/quad_vertex.glsl', function (data) { quadVertex = data; countLoads(); })
-loader.load('/shaders/julia_fragment.glsl', function (data) { juliaFragment = data; countLoads(); })
 
-var loadsLeft = 3;
+var loadsLeft = 2;
 function countLoads() {
 	loadsLeft--;
 	if (loadsLeft == 0) {
@@ -51,7 +54,7 @@ function countLoads() {
 			new THREE.PlaneGeometry(1, 2),
 			new THREE.ShaderMaterial({
 				vertexShader: quadVertex,
-				fragmentShader: mandelbrotFragment,
+				fragmentShader: fractalFragment,
 				uniforms: mandelbrotUniforms,
 				depthWrite: false,
 				depthTest: false
@@ -64,7 +67,7 @@ function countLoads() {
 			new THREE.PlaneGeometry(1, 2),
 			new THREE.ShaderMaterial({
 				vertexShader: quadVertex,
-				fragmentShader: juliaFragment,
+				fragmentShader: fractalFragment,
 				uniforms: juliaUniforms,
 				depthWrite: false,
 				depthTest: false
@@ -78,23 +81,26 @@ function countLoads() {
 function tick() {
 	var dt = clock.getDelta();
 
-	if(controls.mouseRight){
-		mandelbrotUniforms.center.value.x -= 
-			controls.mouseDX / canvasHTML.width*2 * mandelbrotUniforms.scale.value;
-		mandelbrotUniforms.center.value.y += 
-			controls.mouseDY / canvasHTML.height * mandelbrotUniforms.scale.value;
-	}
-	if(controls.mouseLeft){
-		juliaUniforms.picked.value = new THREE.Vector2(
-			(controls.mouseX / canvasHTML.width*2 - 0.5) * mandelbrotUniforms.aspect.value * mandelbrotUniforms.scale.value + mandelbrotUniforms.center.value.x,
-			-(controls.mouseY / canvasHTML.height - 0.5) * mandelbrotUniforms.scale.value + mandelbrotUniforms.center.value.y
-		);
+	if(controls.doUpdate){
+		var impacted = controls.mouseX > canvasHTML.width/2? juliaUniforms : mandelbrotUniforms;
 
-		mandelbrotUniforms.picked.value = juliaUniforms.picked.value;
-	}
-	
-	mandelbrotUniforms.scale.value *= Math.pow(1.002, controls.mouseScroll);
+		if(controls.mouseRight){
+			impacted.center.value.x -= 
+			controls.mouseDX / canvasHTML.width*2 * impacted.scale.value;
+			impacted.center.value.y += 
+			controls.mouseDY / canvasHTML.height * impacted.scale.value;
+		}
+		if(controls.mouseLeft && impacted == mandelbrotUniforms){
+			juliaUniforms.picked.value = new THREE.Vector2(
+				(controls.mouseX / canvasHTML.width*2 - 0.5) * mandelbrotUniforms.aspect.value * mandelbrotUniforms.scale.value + mandelbrotUniforms.center.value.x,
+				-(controls.mouseY / canvasHTML.height - 0.5) * mandelbrotUniforms.scale.value + mandelbrotUniforms.center.value.y
+			);
 
+			mandelbrotUniforms.picked.value = juliaUniforms.picked.value;
+		}
+		
+		impacted.scale.value *= Math.pow(1.002, controls.mouseScroll);
+	}
 
 	updateControls();
 

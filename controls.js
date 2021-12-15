@@ -3,12 +3,14 @@ document.addEventListener('contextmenu', event => event.preventDefault());
 var controls = {
 	w: false, a: false, s: false, d: false, e: false, q: false,
 	mouseLeft: false, mouseRight: false, mouseX: 0, mouseY: 0, mouseDX: 0, mouseDY: 0,
-	mouseScroll: 1
+	mouseScroll: 1,
+	doUpdate: false
 }
 var prevControls = {
 	w: false, a: false, s: false, d: false, e: false, q: false,
 	mouseLeft: false, mouseRight: false, mouseX: 0, mouseY: 0, mouseDX: 0, mouseDY: 0,
-	mouseScroll: 1
+	mouseScroll: 1,
+	doUpdate: false
 };
 
 function updateControls(){
@@ -25,18 +27,25 @@ function updateControls(){
 	prevControls.mouseDX = controls.mouseDX;
 	prevControls.mouseDY = controls.mouseDY;
 	prevControls.mouseScroll = controls.mouseScroll;
+	prevControls.doUpdate = controls.doUpdate;
 
 	controls.mouseDY = 0;
 	controls.mouseDX = 0;
 
 	controls.mouseScroll = 0;
+
+	controls.doUpdate = false;
 }
 
 document.onwheel = function (e) {
+	controls.doUpdate = true;
+
 	controls.mouseScroll += e.deltaY;
 }
 
 document.onkeydown = function (e) {
+	controls.doUpdate = true;
+	
 	switch (e.code) {
 		case 'KeyW':
 			controls.w = true;
@@ -59,6 +68,8 @@ document.onkeydown = function (e) {
 	}
 };
 document.onkeyup = function (e) {
+	controls.doUpdate = true;
+	
 	switch (e.code) {
 		case 'KeyW':
 			controls.w = false;
@@ -82,15 +93,21 @@ document.onkeyup = function (e) {
 };
 
 document.onmousedown = function (e) {
+	controls.doUpdate = true;
+	
 	if(e.button == 0) controls.mouseLeft = true;
 	if(e.button == 2) controls.mouseRight = true;
 };
 document.onmouseup = function (e) {
+	controls.doUpdate = true;
+	
 	if(e.button == 0) controls.mouseLeft = false;
 	if(e.button == 2) controls.mouseRight = false;
 };
 
 document.onmousemove = function (e) {
+	controls.doUpdate = true;
+	
 	controls.mouseDX += e.movementX;
 	controls.mouseDY += e.movementY;
 
