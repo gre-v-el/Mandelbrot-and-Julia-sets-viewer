@@ -18,7 +18,7 @@ void main() {
 	vec2 z = UV;
 
 	// orbit traps
-	float best = 10.;
+	float best = 10e5;
 
 	// iterate
 	int i = 0;
@@ -28,7 +28,7 @@ void main() {
 		z.x = xtemp;
 		i ++;
 
-		best = min(best, length(z + picked));
+		best = min(best, pow(10.*min(abs(z.x), abs(z.y)), 0.1)*1.);
 	}
 
 	// coloring
@@ -41,7 +41,7 @@ void main() {
 		step(-0.015 * scale, picked.x - UV.x) * step(picked.x - UV.x, 0.015*scale) *
 		step(-0.0015 * scale, picked.y - UV.y) * step(picked.y - UV.y, 0.0015*scale);
 
-	vec3 color = vec3(1.-best)* vec3(0.1294, 0.6118, 0.0824);
+	vec3 color = 4.*vec3(1.-best)* vec3(0.1294, 0.6118, 0.0824);
 
-	gl_FragColor = i==ITERATIONS?vec4(0., 0., 0., 1.):vec4(pointer>0.?1.-color:color, 1.);
+	gl_FragColor = vec4(pointer>0.?1.-color:color, 1.);//i==ITERATIONS?vec4(0., 0., 0., 1.):vec4(pointer>0.?1.-color:color, 1.);
 }
