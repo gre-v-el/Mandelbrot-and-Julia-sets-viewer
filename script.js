@@ -1,6 +1,6 @@
 import * as THREE from '/three.module.js'
 
-var root = '';
+var root = 'https://gre-v-el.github.io/Mandelbrot-and-Julia-sets-viewer/';
 
 // three.js setups
 var canvasHTML = document.getElementById('canvas');
