@@ -10,27 +10,39 @@ varying vec2 UV;
 // consts
 const int ITERATIONS = 500;
 
-
 void main() { 
-	
+	// define initial numbers
+	// juliaInt == 0: mandelbrot | juliaInt == 1: julia | inbetween gives different results
 	vec2 c = UV;
-	c = mix(c, picked, juliaInterpolation);
+	c = mix(c, picked, juliaInterpolation); 
 	vec2 z = UV;
 
+	// orbit traps
+	float best = 10.;
+
+	// iterate
 	int i = 0;
 	while(z.x*z.x + z.y*z.y < 4. && i < ITERATIONS){
 		float xtemp = z.x*z.x - z.y*z.y + c.x;
 		z.y = 2.*z.x*z.y + c.y;
 		z.x = xtemp;
 		i ++;
+
+		best = min(best, length(z));
 	}
 
+	// coloring
 	float ratio = float(i)/float(ITERATIONS);
 
-	
-	float pointer = 
-	step(-0.01 * scale, picked.x - UV.x) * step(picked.x - UV.x, 0.01*scale) *
-	step(-0.01 * scale, picked.y - UV.y) * step(picked.y - UV.y, 0.01*scale);
+	// draw pointer
+	float pointer = isJulia?0.:
+		step(-0.0015 * scale, picked.x - UV.x) * step(picked.x - UV.x, 0.0015*scale) *
+		step(-0.015 * scale, picked.y - UV.y) * step(picked.y - UV.y, 0.015*scale) +
+		
+		step(-0.015 * scale, picked.x - UV.x) * step(picked.x - UV.x, 0.015*scale) *
+		step(-0.0015 * scale, picked.y - UV.y) * step(picked.y - UV.y, 0.0015*scale);
 
-	gl_FragColor = vec4(vec3(ratio*ratio) + pointer, 1.);
+	vec3 color = vec3(ratio);
+
+	gl_FragColor = vec4(pointer>0.?1.-color:color, 1.);
 }
