@@ -17,7 +17,7 @@ script.onload = function () {
 	stats = new Stats();
 	document.body.appendChild(stats.dom);
 };
-script.src = ''// '//mrdoob.github.io/stats.js/build/stats.min.js';
+script.src = ''// 'mrdoob.github.io/stats.js/build/stats.min.js';
 document.head.appendChild(script);
 
 // uniforms
