@@ -11,8 +11,12 @@
 <body>
 	<canvas class="webgl" id="canvas"></canvas>
 	<nav id="inspector">
+		
+		<br>
+
 		<input type="number" class="box" id="iterations-input" step="50" min="0" max="10000" value="500"> Iterations
 
+		<br>
 		<br>
 		<br>
 
@@ -20,10 +24,19 @@
 		<br>
 		Julia Set Interpolation
 
+		<br>
+		<br>
+		<br>
+
+		<input type="range" class="slider" id="power-input" step="0.001" min="-5" max="5" value="2"> 
+		<br>
+		Power	
+
 
 	</nav>
 	
 	<script src="controls.js"></script>
+	<script src="inspector.js"></script>
 	<script src="script.js" type="module"></script>
 </body>
 

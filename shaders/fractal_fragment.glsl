@@ -21,7 +21,7 @@ void main() {
 
 	// iterate
 	int i = 0;
-	while(z.x*z.x + z.y*z.y < 4. && i < iterations){
+	while( (z.x*z.x + z.y*z.y < 4. && i < iterations) || i < 1){
 		float xtemp = z.x*z.x - z.y*z.y + c.x;
 		z.y = 2.*z.x*z.y + c.y;
 		z.x = xtemp;
@@ -43,7 +43,7 @@ void main() {
 
 	vec3 nearestColor = vec3(0.7804, 0.9216, 0.0) * vec3(2.*(1.-pow(10.*nearest, 0.1)));
 	vec3 averageColor = vec3(0.0745, 0.4392, 0.0) * vec3(pow(0.5*average, 0.5));
-	vec3 basicColor   = vec3(0.0, 0.8824, 1.0) * vec3(float(i)/float(iterations));
+	vec3 basicColor   = vec3(0.0,    0.8824, 1.0) * vec3(float(i)/float(iterations));
 
 	vec3 color = (nearestColor + averageColor + basicColor) * vec3(0.5);
 

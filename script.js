@@ -1,5 +1,7 @@
 import * as THREE from '/three.module.js'
 
+var root = '';
+
 // three.js setups
 var canvasHTML = document.getElementById('canvas');
 var sceneThree = new THREE.Scene();
@@ -44,8 +46,8 @@ var juliaUniforms = {
 var quadVertex = '';
 var fractalFragment = '';
 var juliaFragment = '';
-loader.load('/shaders/fractal_fragment.glsl', function (data) { fractalFragment = data; countLoads(); })
-loader.load('/shaders/quad_vertex.glsl', function (data) { quadVertex = data; countLoads(); })
+loader.load(root + '/shaders/fractal_fragment.glsl', function (data) { fractalFragment = data; countLoads(); })
+loader.load(root + '/shaders/quad_vertex.glsl', function (data) { quadVertex = data; countLoads(); })
 
 var loadsLeft = 2;
 function countLoads() {
