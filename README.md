@@ -20,6 +20,7 @@ Try it [here](https://gre-v-el.github.io/Mandelbrot-and-Julia-sets-viewer/).
     |          Power          | Changes the original z<sup>2</sup>+c into z<sup>x</sup>+c (x can be fractional and negative) |
 
 * Pickover stalk rendering.
+* Rendering a high definition image to a file.
 
 
 ## Todo
@@ -27,7 +28,6 @@ Try it [here](https://gre-v-el.github.io/Mandelbrot-and-Julia-sets-viewer/).
 * double-single precision
 * animation
 * anti-aliasing
-* render to image
 
 
 ## Technologies
