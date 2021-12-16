@@ -44,6 +44,14 @@ var juliaUniforms = {
 	power: {value: 2}
 };
 
+var targetPicked = new THREE.Vector2(-1, 0);
+var smoothPicked = new THREE.Vector2(-1, 0);
+
+var smoothScaleJ = 5;
+var targetScaleJ = 5;
+var smoothScaleM = 5;
+var targetScaleM = 5;
+
 // load shaders and create the scene
 var quadVertex = '';
 var fractalFragment = '';
@@ -97,15 +105,16 @@ function tick() {
 				controls.mouseDY / canvasHTML.height * impacted.scale.value;
 		}
 		if (controls.mouseLeft && impacted == mandelbrotUniforms) {
-			juliaUniforms.picked.value = new THREE.Vector2(
+			targetPicked = new THREE.Vector2(
 				(controls.mouseX / canvasHTML.width * 2 - 0.5) * mandelbrotUniforms.aspect.value * mandelbrotUniforms.scale.value + mandelbrotUniforms.center.value.x,
 				-(controls.mouseY / canvasHTML.height - 0.5) * mandelbrotUniforms.scale.value + mandelbrotUniforms.center.value.y
 			);
 
-			mandelbrotUniforms.picked.value = juliaUniforms.picked.value;
-
 		}
-		impacted.scale.value *= Math.pow(1.002, controls.mouseScroll);
+		if(impacted == mandelbrotUniforms) 
+			targetScaleM*= Math.pow(1.002, controls.mouseScroll);
+		else 
+			targetScaleJ*= Math.pow(1.002, controls.mouseScroll);
 
 		mandelbrotUniforms.iterations.value = inspector.iterations;
 		juliaUniforms.iterations.value = inspector.iterations;
@@ -115,6 +124,16 @@ function tick() {
 
 		juliaUniforms.juliaInterpolation.value = inspector.interpolation;
 	}
+
+	smoothPicked.lerp(targetPicked, 0.2);
+	smoothScaleM += (targetScaleM - smoothScaleM)*0.2;
+	smoothScaleJ += (targetScaleJ - smoothScaleJ)*0.2;
+
+	juliaUniforms.picked.value = smoothPicked;
+	mandelbrotUniforms.picked.value = smoothPicked;
+
+	juliaUniforms.scale.value = smoothScaleJ;
+	mandelbrotUniforms.scale.value = smoothScaleM;
 
 	updateControls();
 
