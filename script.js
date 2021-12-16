@@ -5,7 +5,7 @@ var root = 'https://gre-v-el.github.io/Mandelbrot-and-Julia-sets-viewer/'
 // three.js setups
 var canvasHTML = document.getElementById('canvas');
 var sceneThree = new THREE.Scene();
-var rendererThree = new THREE.WebGLRenderer({ canvas: canvasHTML, antialias: true });
+var rendererThree = new THREE.WebGLRenderer({ canvas: canvasHTML, preserveDrawingBuffer: true});
 var cameraThree = new THREE.PerspectiveCamera(45, canvasHTML.clientWidth / canvasHTML.clientWidth, 1, 1000);
 var clock = new THREE.Clock();
 var loader = new THREE.FileLoader();
@@ -136,3 +136,33 @@ function render() {
 }
 
 tick();
+
+
+
+
+
+
+
+document.getElementById("screenshot-button").addEventListener('click', function() {
+	canvasHTML.width = 100;
+	canvasHTML.height = 100;
+	
+	rendererThree.setSize(canvasHTML.width, canvasHTML.height, false);
+	cameraThree.aspect = canvasHTML.width / canvasHTML.height;
+	cameraThree.updateProjectionMatrix();
+	mandelbrotUniforms.aspect.value = cameraThree.aspect / 2;
+	juliaUniforms.aspect.value = cameraThree.aspect / 2;
+
+	rendererThree.render(sceneThree, cameraThree);
+
+	var link = document.createElement('a');
+    if (typeof link.download === 'string') {
+        document.body.appendChild(link); //Firefox requires the link to be in the body
+        link.download = "mandelbrot_julia.png";
+        link.href = canvasHTML.toDataURL("image/png");
+        link.click();
+        document.body.removeChild(link); //remove the link when done
+    } else {
+        location.replace(uri);
+    }
+})

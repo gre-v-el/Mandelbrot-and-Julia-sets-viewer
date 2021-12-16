@@ -22,4 +22,3 @@ powerInput.addEventListener('input', function() {
 	inspector.power = powerInput.value;
 	controls.doUpdate = true;
 });
-

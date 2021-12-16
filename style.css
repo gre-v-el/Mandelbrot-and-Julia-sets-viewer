@@ -53,6 +53,23 @@ body{
 	text-align: center;
 }
 
+.button{
+	width: 130px;
+	margin-right: 20px;
+	font-weight: bold;
+	background-color: #171717;
+	border: #333 solid 1px;
+	color: blanchedalmond;
+	padding: 6px;
+	text-align: center;
+	cursor: pointer;
+	transition: 0.3s;
+}
+.button:hover{
+	border: #777 solid 1px;
+	background-color: #333;
+}
+
 .slider{
 	-webkit-appearance: none;
 	appearance: none;
@@ -78,12 +95,8 @@ body{
 .slider:hover{
 	opacity: 1.0;
 	border: solid 1px #777;
-	height: 8px;
-	width: calc(100%-2px);
 }
 
 .slider::-webkit-slider-thumb:hover{
 	border: solid 1px #aaa;
-	width: 13px;
-	height: 13px;
 }
