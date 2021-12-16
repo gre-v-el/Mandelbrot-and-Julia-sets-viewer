@@ -1,6 +1,12 @@
 # Mandelbrot and Julia Sets split-view explorer
 
-Try it [here](https://gre-v-el.github.io/Mandelbrot-and-Julia-sets-viewer/).
+## Try it [here](https://gre-v-el.github.io/Mandelbrot-and-Julia-sets-viewer/).
+
+![screenshot](images/mandelbrot_julia.png)
+![screenshot](images/mandelbrot_julia%20(1).png)
+![screenshot](images/mandelbrot_julia%20(2).png)
+![screenshot](images/mandelbrot_julia%20(3).png)
+![screenshot](images/mandelbrot_julia%20(5).png)
 
 ## Features
 * Controls:  
