@@ -6,21 +6,25 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Fractal split-view</title>
 	<link rel="stylesheet" href="style.css">
+
+	<style>
+		@import url('https://fonts.googleapis.com/css2?family=Bakbak+One&display=swap');
+	</style>
 </head>
 
 <body>
 	<canvas class="webgl" id="canvas"></canvas>
 	<nav id="inspector">
-		
-		<br>
-
-		<input type="number" class="box" id="iterations-input" step="50" min="0" max="10000" value="500"/> Iterations
 
 		<br>
+
+		<input type="number" class="box" id="iterations-input" step="50" min="0" max="10000" value="500" /> Iterations
+
+		<br>
 		<br>
 		<br>
 
-		<input type="range" class="slider" id="interpolation-input" step="0.001" min="0" max="1" value="1"/> 
+		<input type="range" class="slider" id="interpolation-input" step="0.001" min="0" max="1" value="1" />
 		<br>
 		Julia Set Interpolation
 
@@ -28,19 +32,30 @@
 		<br>
 		<br>
 
-		<input type="range" class="slider" id="power-input" step="0.001" min="-5" max="5" value="2"/> 
+		<input type="range" class="slider" id="power-input" step="0.001" min="-5" max="5" value="2" />
 		<br>
-		Power	
+		Power
 
 		<br>
 		<br>
 		<br>
 
-		<input type="button" value="take a screenshot" class="button" id="screenshot-button" />
+		<input type="button" value="take a screenshot" class="button" id="dropdown-button" />
+		<div id="download-options" style="height: 0px">
+			<br>
+			width: <input type="number" class="box" id="render-width-input" step="50" min="100" max="100000"
+				value="1920" />
+			height: <input type="number" class="box" id="render-height-input" step="50" min="100" max="100000"
+				value="1080" />
 
+			<br>
+			<br>
+
+			<input type="button" value="download" class="button" id="screenshot-button" />
+		</div>
 
 	</nav>
-	
+
 	<script src="controls.js"></script>
 	<script src="inspector.js"></script>
 	<script src="script.js" type="module"></script>

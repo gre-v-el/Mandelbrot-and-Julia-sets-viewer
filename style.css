@@ -8,9 +8,9 @@ html,
 body
 {
     height: 100vh;
-    font-family: 'Poppins';
 	background-color: #000000;
 	color: aliceblue;
+	font-family: 'Bakbak One', cursive;
 }
 
 body{
@@ -44,7 +44,6 @@ body{
 
 .box{
 	width: 50px;
-	margin-right: 20px;
 	font-weight: bold;
 	background-color: black;
 	border: #777 solid 1px;
@@ -55,7 +54,6 @@ body{
 
 .button{
 	width: 130px;
-	margin-right: 20px;
 	font-weight: bold;
 	background-color: #171717;
 	border: #333 solid 1px;
@@ -99,4 +97,15 @@ body{
 
 .slider::-webkit-slider-thumb:hover{
 	border: solid 1px #aaa;
+}
+
+#download-options{
+	margin-top: 15px;
+	width: 100%;
+	background-color: #333;
+	border-radius: 5px;
+	border: 1px solid #555;
+	transition: 0.5s;
+	overflow: hidden;
+	text-align: center;
 }

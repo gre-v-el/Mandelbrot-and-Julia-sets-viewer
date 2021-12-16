@@ -143,9 +143,15 @@ tick();
 
 
 
+document.getElementById("dropdown-button").addEventListener('click', function() {
+
+	document.getElementById("download-options").style.height = 
+		document.getElementById("download-options").style.height == "150px"? "0px" : "150px";
+})
+
 document.getElementById("screenshot-button").addEventListener('click', function() {
-	canvasHTML.width = 100;
-	canvasHTML.height = 100;
+	canvasHTML.width = document.getElementById("render-width-input").value;
+	canvasHTML.height = document.getElementById("render-height-input").value;
 	
 	rendererThree.setSize(canvasHTML.width, canvasHTML.height, false);
 	cameraThree.aspect = canvasHTML.width / canvasHTML.height;
@@ -156,13 +162,15 @@ document.getElementById("screenshot-button").addEventListener('click', function(
 	rendererThree.render(sceneThree, cameraThree);
 
 	var link = document.createElement('a');
-    if (typeof link.download === 'string') {
-        document.body.appendChild(link); //Firefox requires the link to be in the body
-        link.download = "mandelbrot_julia.png";
-        link.href = canvasHTML.toDataURL("image/png");
-        link.click();
-        document.body.removeChild(link); //remove the link when done
-    } else {
-        location.replace(uri);
-    }
+	document.body.appendChild(link); 
+	link.download = "mandelbrot_julia.png";
+	link.href = canvasHTML.toDataURL("image/png");
+	link.click();
+	document.body.removeChild(link);
+    
+
+	document.getElementById("download-options").style.height = "0px";
 })
+
+
+  
