@@ -1,5 +1,3 @@
-// TODO: OPTIMIZE!!!
-
 // per frame variables
 uniform vec2 picked; 
 uniform float scale;
@@ -11,11 +9,18 @@ uniform float power;
 // per pixel variables
 varying vec2 UV;
 
+float distSq(vec2 a, vec2 b){
+	return (a.x - b.x) * (a.x - b.x) + (a.y - b.y) * (a.y - b.y); 
+}
+float distSq(vec2 a){
+	return a.x * a.x + a.y * a.y; 
+}
+
 vec2 complexPow(vec2 c, float power){
-	float r = length(c);
+	float r = distSq(c);
 	float theta = atan(c.y, c.x);
 
-	r = pow(r, power);
+	r = pow(r, power/2.);
 	theta *= power;
 
 	return vec2(r*cos(theta), r*sin(theta));
@@ -35,14 +40,10 @@ void main() {
 	// iterate
 	int i = 0;
 	while( (z.x*z.x + z.y*z.y < 4. && i < iterations) || i < 1){
-		// float xtemp = z.x*z.x - z.y*z.y + c.x;
-		// z.y = 2.*z.x*z.y + c.y;
-		// z.x = xtemp;
 		z = complexPow(z, power);
 		z += c;
 		i ++;
 
-		//nearest = min(nearest, pow(10.*min(abs(z.x), abs(z.y)), 0.1)*1.);
 		nearest = min(nearest, min(abs(z.x), abs(z.y)));
 		average += min(abs(z.x), abs(z.y));
 	}
@@ -50,11 +51,13 @@ void main() {
 
 	// draw pointer
 	float pointer = isJulia?0.:
-		step(-0.0015 * scale, picked.x - UV.x) * step(picked.x - UV.x, 0.0015*scale) *
-		step(-0.015 * scale, picked.y - UV.y) * step(picked.y - UV.y, 0.015*scale) +
+		smoothstep(0.0001 * scale * scale, 0.00005 * scale * scale, distSq(UV, picked)) *
+		smoothstep(0.00003 * scale * scale, 0.00005 * scale * scale, distSq(UV, picked));
+		// step(-0.0015 * scale, picked.x - UV.x) * step(picked.x - UV.x, 0.0015*scale) *
+		// step(-0.015 * scale, picked.y - UV.y) * step(picked.y - UV.y, 0.015*scale) +
 		
-		step(-0.015 * scale, picked.x - UV.x) * step(picked.x - UV.x, 0.015*scale) *
-		step(-0.0015 * scale, picked.y - UV.y) * step(picked.y - UV.y, 0.0015*scale);
+		// step(-0.015 * scale, picked.x - UV.x) * step(picked.x - UV.x, 0.015*scale) *
+		// step(-0.0015 * scale, picked.y - UV.y) * step(picked.y - UV.y, 0.0015*scale);
 
 	vec3 nearestColor = vec3(0.7804, 0.9216, 0.0) * vec3(2.*(1.-pow(10.*nearest, 0.1)));
 	vec3 averageColor = vec3(0.0745, 0.4392, 0.0) * vec3(pow(0.5*average, 0.5));
