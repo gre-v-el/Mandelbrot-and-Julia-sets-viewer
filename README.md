@@ -29,13 +29,6 @@
 * Rendering a high definition image to a file.
 
 
-## Todo
-* color picker in inspector
-* double-single precision
-* animation
-* anti-aliasing
-
-
 ## Technologies
 * html + js + css
 * three.js
